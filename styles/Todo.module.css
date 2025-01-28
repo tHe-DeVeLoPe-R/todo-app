@@ -88,13 +88,15 @@
     align-items: center;
     gap: 25px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 20px;
+    padding: 30px;
     width: 25%;
     background-color: #ededfde5;
     font-family: sans-serif;
     border-radius: 5px;
 }
-
+.todo h1{
+    line-height: 2rem;
+}
 .todo p {
     color: black;
     text-align: center;
