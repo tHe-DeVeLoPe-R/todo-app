@@ -1,7 +1,6 @@
 
-
-import SignUp from "@/components/SignUp";
-
+import Nav from "@/components/Nav";
+import Todos from "@/components/Todos";
 import { Geist, Geist_Mono } from "next/font/google";
 
 
@@ -15,10 +14,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function Home() {
+export default function Dashboard() {
   return (
     <>
-    <SignUp/>
+      <Nav/>
+      <Todos/>
     </>
   );
 }
