@@ -1,0 +1,72 @@
+.todoMain {
+    margin-top: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.todoMain h1 {
+    color: #343A40;
+    text-align: center;
+    font-size: 47px;
+}
+
+.todoList {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px;
+}
+
+.todoList h1 {
+    color: #343A40;
+    text-align: center;
+    font-size: 30px;
+}
+
+.todo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 10px;
+    width: 25%;
+    background-color: #ededfde5;
+    font-family: sans-serif;
+    border-radius: 5px;
+}
+
+.todo p {
+    color: black;
+    text-align: center;
+    overflow: hidden;
+}
+
+.todoActions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.todoActions button {
+    background-color: #2C3E50;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+}
+
+.todoActions button:hover {
+    background-color: rgba(0, 255, 255, 0.585);
+}
+
+.todoCompleted {
+    color: green;
+}
+
+.todoPending {
+    color: red;
+}
