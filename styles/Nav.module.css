@@ -1,0 +1,31 @@
+
+.navMain{
+    background-color: #2C3E50;
+    color: #F8F9FA;
+    width: 100%;
+    padding: 12px;
+    display: flex;
+   
+}
+
+.navMain img{
+    width: 50px;
+    height: 50px;
+}
+.navMain ul{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 35%;
+}
+
+.navItem{
+    text-decoration: none;
+    font-size: 17px;
+    list-style: none;
+}
+
+.navItem:hover{
+    color: #FF4500;
+}
