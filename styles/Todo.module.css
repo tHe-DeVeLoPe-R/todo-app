@@ -11,8 +11,14 @@
     color: #343A40;
     text-align: center;
     font-size: 47px;
+    line-height: 1rem;
 }
-
+.addTodoLink{
+    text-decoration: underline;
+    color: #2C3E50;
+    font-size: 16px;
+    font-family: sans-serif;
+}
 .todoList {
     display: flex;
     gap: 50px;
@@ -27,13 +33,62 @@
     font-size: 30px;
 }
 
+.addTodoModal{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #2C3E50;
+    align-items: center;
+    width:60%;
+    padding: 20px;
+    z-index: 1;
+    background-color: white;
+    border-radius: 5px;
+
+}
+.addTodoModal h1{
+    line-height: 1rem;
+    padding: 0;
+    margin-top: 3%;
+}
+.todoForm{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    color: #2C3E50;
+    width: 100%;
+}
+.todoForm label{
+    font-size: 16px;
+}
+.todoForm input, 
+.todoForm textarea{
+    padding: 15px;
+    width: 50%;
+    border: 1px solid #2C3E50;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #2C3E50;
+    background-color: white;
+}
+.addbtn{
+    background-color: #2C3E50;
+    border: none;
+    padding: 10px 55px 10px 55px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.addbtn:hover{
+    background-color: #264f78;
+}
 .todo {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 10px;
+    padding: 20px;
     width: 25%;
     background-color: #ededfde5;
     font-family: sans-serif;

@@ -1,7 +1,11 @@
 import React from "react"
 import styles from '../styles/Todo.module.css'
+import { useState } from "react";
 
 export default function Todos() {
+
+    const [showAddTodo, setShowAddTodo] = useState(false);
+
     const todos = [
         {
             'title': 'Buy Groceries',
@@ -54,9 +58,25 @@ export default function Todos() {
         }
     ];
     
+    const manageAddTodo = ()=>{
+        setShowAddTodo(false);
+    }
     return (
         <div className={styles.todoMain}>
             <h1>Todo List</h1>
+            <a onClick={()=>setShowAddTodo(true)} className = {styles.addTodoLink} href="#">Click to add new todo</a>
+           {
+            showAddTodo ?  <div className = {styles.addTodoModal}>
+            <h1>Add Todo</h1><br />
+            <form className = {styles.todoForm} action="">
+              <label htmlFor="title">Enter Title</label>
+              <input type="text" name="title" required placeholder="Todo Title" />
+              <label htmlFor="description">Enter Brief</label>
+              <textarea name="description" required id="brief" placeholder="Enter Short Description"></textarea>
+              <button onClick={manageAddTodo} className = {styles.addbtn}>Add Todo</button>
+            </form>
+          </div> : null
+           }
             <div className = {styles.todoList}>
             {
                 todos.map((todo, index)=>{

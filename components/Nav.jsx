@@ -11,9 +11,7 @@ export default function Nav() {
                 <li className = {styles.navItem}>
                     <a href="">Home</a>
                 </li>
-                <li className = {styles.navItem}>
-                    <a href="">Add Todo</a>
-                </li>
+                
                 <li className = {styles.navItem}>
                     <a href="">Logout</a>
                 </li>
