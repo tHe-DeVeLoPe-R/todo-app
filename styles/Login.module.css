@@ -47,3 +47,11 @@
 .loginForm a:hover{
     color: #2C3E50;
 }
+.loadingBarImg{
+    width: 100px;
+    height: 100px;
+}
+
+.error{
+    color: red;
+}

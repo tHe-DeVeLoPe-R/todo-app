@@ -1,11 +1,19 @@
 import React from "react"
 import styles from '../styles/Todo.module.css'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function Todos() {
-
+    
     const [showAddTodo, setShowAddTodo] = useState(false);
-
+    const username = useSelector((state) => state.auth.username);
+    const router = useRouter();
+    useEffect(()=>{
+        if(!username){
+          router.push("/");
+        }
+    }, [username, router])
     const todos = [
         {
             'title': 'Buy Groceries',
@@ -63,7 +71,7 @@ export default function Todos() {
     }
     return (
         <div className={styles.todoMain}>
-            <h1>Todo List</h1>
+            <h1>Welcome back {username}</h1>
             <a onClick={()=>setShowAddTodo(true)} className = {styles.addTodoLink} href="#">Click to add new todo</a>
            {
             showAddTodo ?  <div className = {styles.addTodoModal}>
