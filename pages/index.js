@@ -1,6 +1,4 @@
-
-
-import SignUp from "@/components/SignUp";
+import LoginAccount from "@/components/LoginAccount";
 
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -18,7 +16,7 @@ const geistMono = Geist_Mono({
 export default function Home() {
   return (
     <>
-    <SignUp/>
+    <LoginAccount/>
     </>
   );
 }
