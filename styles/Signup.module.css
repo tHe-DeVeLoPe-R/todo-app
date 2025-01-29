@@ -24,9 +24,10 @@
     font-size: 16px;
     width: 50%;
     border: none;
-    background-color: white;
+    background-color: rgb(239, 237, 237);
     border-radius: 5px;
     color: #343A40;
+    border: 1px solid black;
 }
 
 .btn{
@@ -45,4 +46,12 @@
 }
 .signupForm a:hover{
     color: #2C3E50;
+}
+.error{
+    color: red;
+    text-align: center;
+}
+.loadingimg{
+    width: 30px;
+    height: 20px;
 }
