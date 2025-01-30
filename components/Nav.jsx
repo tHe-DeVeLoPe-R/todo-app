@@ -16,16 +16,12 @@ export default function Nav() {
         <div className={styles.navMain}>
             <img src={logo.src} alt="" />
             <ul >
-                <li className = {styles.navItem}>
-                    <a href="">Home</a>
-                </li>
+               
                 
                 <li className = {styles.navItem}>
                     <a onClick={handleLogout} href="#">Logout</a>
                 </li>
-                <li className = {styles.navItem}>
-                    <a href="">About App</a>
-                </li>
+               
             </ul>
 
         </div>

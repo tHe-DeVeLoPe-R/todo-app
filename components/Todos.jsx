@@ -120,9 +120,11 @@ export default function Todos() {
     };
 
     const openUpdateModal = (todo) => {
+        //setting previous values
         setCurrentTodoId(todo.id);
         setTitle(todo.title);
         setDesc(todo.description);
+        //make the update modal to show
         setShowUpdateTodo(true);
     };
 
