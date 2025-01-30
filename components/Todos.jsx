@@ -1,107 +1,193 @@
-import React from "react"
-import styles from '../styles/Todo.module.css'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import styles from '../styles/Todo.module.css';
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import loadingif from '../public/images/loading.gif';
 
 export default function Todos() {
-    
     const [showAddTodo, setShowAddTodo] = useState(false);
+    const [showUpdateTodo, setShowUpdateTodo] = useState(false);
+    const [title, setTitle] = useState("");
+    const [desc, setDesc] = useState("");
+    const [message, setMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [todoList, setTodoList] = useState([]); // Initialize as an empty array
+    const [currentTodoId, setCurrentTodoId] = useState(null); // Track the current todo ID for update
+
     const username = useSelector((state) => state.auth.username);
     const router = useRouter();
-    useEffect(()=>{
-        if(!username){
-          router.push("/");
+
+    // Redirect to login if username is not set
+    useEffect(() => {
+        if (!username) {
+            router.push("/");
         }
-    }, [username, router])
-    const todos = [
-        {
-            'title': 'Buy Groceries',
-            'desc': 'Purchase milk, eggs, bread, and vegetables from the supermarket.',
-            'status': 'Pending',
-            'creation': '25-01-2025'
-        },
-        {
-            'title': 'Morning Workout',
-            'desc': 'Complete a 30-minute cardio session followed by strength training.',
-            'status': 'Completed',
-            'creation': '24-01-2025'
-        },
-        {
-            'title': 'Team Meeting',
-            'desc': 'Discuss project deadlines and assign tasks during the 11 AM meeting.',
-            'status': 'Completed',
-            'creation': '22-01-2025'
-        },
-        {
-            'title': 'Doctor Appointment',
-            'desc': 'Visit Dr. Smith for a routine check-up at 3 PM.',
-            'status': 'Pending',
-            'creation': '25-01-2025'
-        },
-        {
-            'title': 'Finish Presentation',
-            'desc': 'Prepare the slides for the upcoming client presentation on Monday.',
-            'status': 'In Progress',
-            'creation': '23-01-2025'
-        },
-        {
-            'title': 'Read a Book',
-            'desc': 'Read at least two chapters of "Atomic Habits" before bedtime.',
-            'status': 'Completed',
-            'creation': '21-01-2025'
-        },
-       
-        {
-            'title': 'Pay Utility Bills',
-            'desc': 'Pay the electricity, internet, and water bills for the month.',
-            'status': 'Pending',
-            'creation': '25-01-2025'
-        },
-        {
-            'title': 'Plan Weekend Trip',
-            'desc': 'Research and finalize details for a weekend getaway to the mountains.',
-            'status': 'In Progress',
-            'creation': '24-01-2025'
+    }, [username]);
+
+    // Fetch todos when the component loads
+    useEffect(() => {
+        if (username) {
+            getTodos();
         }
-    ];
-    
-    const manageAddTodo = ()=>{
-        setShowAddTodo(false);
+    }, [username]);
+
+    // Fetch Todos from API
+    const getTodos = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch("/api/gettodos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch todos");
+            }
+            setIsLoading(false);
+            const data = await response.json();  // Parse the response JSON
+            console.log("Fetched Todos:", data);  // Log the entire response for debugging
+            const allTodos = Array.isArray(data.message) ? data.message : [];  // Get the rows from the message property
+            setTodoList(allTodos);  // Set the todo list
+        } catch (error) {
+            console.error("Error fetching todos:", error);
+        }
+    };
+
+    const handleRemove = async (id) => {
+        const response = await fetch("/api/removetodo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+        });
+        if (response.ok) {
+            getTodos(); // Refresh todos after removing
+        }
     }
+
+    const handleUpdate = async () => {
+        setIsLoading(true);
+        setMessage("");
+
+        try {
+            const response = await fetch("/api/updatetodo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: currentTodoId, title, desc, username }),
+            });
+
+            const responseData = await response.json();
+            setIsLoading(false);
+
+            if (response.ok) {
+                setShowUpdateTodo(false);
+                getTodos(); // Refresh todos after updating
+            } else {
+                setMessage(responseData.message);
+            }
+        } catch (error) {
+            console.error("Error updating todo:", error);
+            setIsLoading(false);
+            setMessage("Failed to update todo.");
+        }
+    };
+
+    const handleAddTodo = async () => {
+        setIsLoading(true);
+        setMessage("");
+
+        try {
+            const response = await fetch("/api/addtodo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, desc, username }),
+            });
+
+            const responseData = await response.json();
+            setIsLoading(false);
+
+            if (response.ok) {
+                setShowAddTodo(false);
+                getTodos(); // Refresh todos after adding
+            } else {
+                setMessage(responseData.message);
+            }
+        } catch (error) {
+            console.error("Error adding todo:", error);
+            setIsLoading(false);
+            setMessage("Failed to add todo.");
+        }
+    };
+
+    const openUpdateModal = (todo) => {
+        setCurrentTodoId(todo.id);
+        setTitle(todo.title);
+        setDesc(todo.description);
+        setShowUpdateTodo(true);
+    };
+
     return (
         <div className={styles.todoMain}>
             <h1>Welcome back {username}</h1>
-            <a onClick={()=>setShowAddTodo(true)} className = {styles.addTodoLink} href="#">Click to add new todo</a>
-           {
-            showAddTodo ?  <div className = {styles.addTodoModal}>
-            <h1>Add Todo</h1><br />
-            <form className = {styles.todoForm} action="">
-              <label htmlFor="title">Enter Title</label>
-              <input type="text" name="title" required placeholder="Todo Title" />
-              <label htmlFor="description">Enter Brief</label>
-              <textarea name="description" required id="brief" placeholder="Enter Short Description"></textarea>
-              <button onClick={manageAddTodo} className = {styles.addbtn}>Add Todo</button>
-            </form>
-          </div> : null
-           }
-            <div className = {styles.todoList}>
-            {
-                todos.map((todo, index)=>{
-                    return <div className = {styles.todo}>
-                          <h1>{todo.title}</h1>
-                          <p>{todo.desc}</p>
-                          <strong className = {`${todo.status == 'Completed' ? styles.todoCompleted : styles.todoPending}`} >{todo.status}</strong>
-                          <strong>Created on {todo.creation}</strong>
-                          <div className = {styles.todoActions}>
-                            <button>Remove</button>
-                            <button>Update</button>
-                           
-                          </div>
+            <a onClick={() => setShowAddTodo(true)} className={styles.addTodoLink} href="#">
+                Click to add new todo
+            </a>
+
+            {(showAddTodo || showUpdateTodo) && (
+                <div className={styles.addTodoModal}>
+                    <h1>{showUpdateTodo ? "Update Todo" : "Add Todo"}</h1><br />
+                    <div className={styles.todoForm}>
+                        <label htmlFor="title">Enter Title</label>
+                        <input
+                            type="text"
+                            name="title"
+                            required
+                            placeholder="Todo Title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <label htmlFor="description">Enter Brief</label>
+                        <textarea
+                            value={desc}
+                            onChange={(e) => setDesc(e.target.value)}
+                            name="description"
+                            required
+                            placeholder="Enter Short Description"
+                        ></textarea>
+
+                        {isLoading ? (
+                            <img className={styles.loadingbar} src={loadingif.src} alt="Loading..." />
+                        ) : (
+                            <button
+                                onClick={showUpdateTodo ? handleUpdate : handleAddTodo}
+                                className={styles.addbtn}
+                            >
+                                {showUpdateTodo ? "Update Todo" : "Add Todo"}
+                            </button>
+                        )}
+
+                        <p>{message}</p>
                     </div>
-                })
-            }
+                </div>
+            )}
+
+            <div className={styles.todoList}>
+                {Array.isArray(todoList) && todoList.length === 0 ? (
+                    <p>No todos found.</p>
+                ) : (
+                    todoList.map((todo) => (
+                        <div key={todo.id} className={styles.todo}>
+                            <h1>{todo.title}</h1>
+                            <p>{todo.description}</p>
+                            <strong>Created on {new Date(todo.created_on).toLocaleString()}</strong>
+                            <div className={styles.todoActions}>
+                                <button onClick={() => handleRemove(todo.id)}>Remove</button>
+                                <button onClick={() => openUpdateModal(todo)}>Update</button>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
-    )
+    );
 }
